@@ -277,7 +277,8 @@ catkin_make
 ## How to launch
 1. Create a task_graph.yaml, road_graph.yaml for the set of nodes to run.
 2. Create launch files to run each node.
-3. Execute Ichthus Launcher
+3. Execute Ichthus Launcher.
+
 `roslaunch ichthus_launcher ichthus_launcher.launch`
 
 ---
