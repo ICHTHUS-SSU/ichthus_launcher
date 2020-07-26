@@ -48,6 +48,7 @@ Ichthus Launcher is designed to reliably execute multiple ROS nodes in various H
 |`topic`|Topic name used between the two ros nodes|
 
 * **Example: task_graph_kcity_simu.yaml**
+> The following example is a task graph of nodes used in Autoware.
 
 ![](doc/images/task_graph.PNG)
 
