@@ -254,14 +254,14 @@ p3: [ 257.643493652, -254.820495605, 0.971031686599, 0.238950755638 ]
 As usual with Colcon,
 ```
 cd colcon_ws/src
-git clone https://github.com/주소
+git clone https://github.com/ICHTHUS-SSU/ichthus_launcher.git
 cd ..
 colcon build --packages-select ichthus_launcher --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 Otherwise,
 ```
 cd catkin_ws/src
-git clone https://github.com/주소
+git clone https://github.com/ICHTHUS-SSU/ichthus_launcher.git
 cd ..
 catkin_make
 ```
