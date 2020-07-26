@@ -49,7 +49,7 @@ Ichthus Launcher is designed to reliably execute multiple ROS nodes in various H
 
 * **Example: task_graph_kcity_simu.yaml**
 
-![](doc/task_graph.PNG)
+![](doc/images/task_graph.PNG)
 
 ```yaml
 ###
@@ -246,7 +246,7 @@ p2: [ 290.346801758, -212.831100464, 0.987794888308, 0.155760260119 ],
 p3: [ 257.643493652, -254.820495605, 0.971031686599, 0.238950755638 ]
 }
 ```
-![](doc/road_example.PNG)
+![](doc/images/road_example.PNG)
 
 ---
 
