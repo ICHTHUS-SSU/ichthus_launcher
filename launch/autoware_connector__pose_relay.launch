@@ -1,0 +1,11 @@
+<launch>
+  <arg name="sim_mode" default="false" />
+
+  <group unless="$(arg sim_mode)">
+    <node pkg="topic_tools" type="relay" name="pose_relay" output="log" args="/ndt_pose /current_pose"/>
+  </group>
+
+  <group if="$(arg sim_mode)">
+    <node pkg="topic_tools" type="relay" name="pose_relay" output="log" args="/sim_pose /current_pose"/>
+  </group>
+</launch>

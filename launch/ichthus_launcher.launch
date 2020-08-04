@@ -1,0 +1,7 @@
+<launch>
+  <!-- ichthus_launcher -->
+  <rosparam file="$(find ichthus_launcher)/cfg/task_graph.yaml"/>
+  <rosparam file="$(find ichthus_launcher)/cfg/road_graph.yaml"/>
+  
+  <node pkg="ichthus_launcher" type="ichthus_launcher" name="ichthus_launcher" output="screen"/>
+</launch>

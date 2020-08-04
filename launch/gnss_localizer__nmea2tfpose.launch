@@ -1,0 +1,6 @@
+<launch>
+  <arg name="plane" default="7"/>  <!-- khkim: Japan regional code: useless in Korea -->
+  <node pkg="gnss_localizer" type="nmea2tfpose" name="nmea2tfpose" output="log">
+    <param name="plane" value="$(arg plane)"/>
+  </node>
+</launch>

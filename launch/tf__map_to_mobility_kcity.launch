@@ -1,0 +1,4 @@
+<launch>
+  <!-- edited by khkim on 20191107: /tf is updated every 200 ms -->
+  <node pkg="tf" type="static_transform_publisher" name="map_to_mobility" args="0 0 0 0 0 0 /map /mobility 200" />
+</launch>

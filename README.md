@@ -1,5 +1,6 @@
 # Ichthus Launcher
-Ichthus Launcher is designed to reliably execute multiple ROS nodes in various HW and SW environments. 
+Ichthus Launcher is a ROS node that launches multiple ROS nodes simultaneously, but respecting the order of ROS node dependences. It reads a task(=node) dependence graph from task_graph.yaml and launches a set of ROS nodes for each stage. The launcher does not proceed to launching the ROS nodes of the next stage without being notified that all the ROS nodes of the current stage have been successfully launched. 
+The launching stages and the associcated ROS nodes should be determined by the user with knowledge of ROS node dependences.
 
 ---
 ## Table of Contents
@@ -13,44 +14,39 @@ Ichthus Launcher is designed to reliably execute multiple ROS nodes in various H
 ---
 
 ## Overview
-* Expresss the sequence of execution in pipeline of nodes (tasks) that ensure stable operation.
-* There can be one node or multiple nodes that need to be run in each pipeline phase.
-* It is the role of task graph(task_graph.yaml) writers to classify and divide the nodes capable of parallel operation.
-* Launcher confirms that all tasks at each stage are properly launched and then starts launching the next step.
-* You can execute a set of nodes of different functions by replacing the task_graph file. *(task_graph.yaml)*
-* The point map can be divided into several road sections, and each node(task) can set the desired parameters for each road section. *(road_graph.yaml)*
-
+Ichthus launcher has two modes of operations:
+* The first mode is to launch the task dependence graph in a sequence of stages according to 'task_graph.yaml'.
+* The second mode is to monitor the state of ROS nodes of interest by subscribing topics of the nodes in order to react to changes of the state. For example, the state of main interest could be in which road section our target vehicle is located at and what mission has to be performed in that section. A set of road sections relating to a point map used by the launcher should be defined in 'road_graph.yaml'. 
 ---
 
 ## Configuration
 
 ### **task_graph.yaml**
-* **task#** is list of Tasks(node), each describing a task to be executed.
+* **task#** describes a ROS node to be executed.
 
 |Syntax|Description|
 -------|--------
-|`num_tasks`|Number of tasks in the task graph.|
-|`task_poll_interval`|Time interval (in milliseconds) of polling to check if a ros node has been executed.|
-|`stage_to_rerun`|The stage from which onwards are to be shutdown and relaunched.|
-|`task_poll_interval`|Time interval (in milliseconds) of polling to check if a ros node has been executed.|
-|`name`|Task(node) name.|
-|`persist`|True if the ros node persists to run|
-|`stage`|Stage number of the pipeline implied by the task graph|
-|`topic`|Name of the critical topic of the ros node|
-|`launch`|Command line to launch the ros node (it should be suffixed with '&' for background execution)|
+|`num_tasks`|number of tasks in the task graph|
+|`task_poll_interval`|time interval (in milliseconds) of polling to check if a ros node has been successfully launched|
+|`stage_to_rerun`|the stage from which onwards are to be shutdown and relaunched by the launcher if needed|
+|`name`|task name|
+|`persist`|true if the ros node persists to run indefinitely|
+|`stage`|stage number of the launching sequence implied by the task graph|
+|`topic`|name of a topic of a ros node to be monitored by the launcher|
+|`launch`|command line string to launch the ros node (it should be suffixed with '&' for background execution)|
 
-* **chan#** is list of channels, each describing a connection between tasks.
+* **chan#** describes a connection between tasks.
 
 |Syntax|Description|
 -------|--------
-|`ptask`|Publishing ros node (0 <= pnode < num_nodes)|
-|`stask`|Subscribing ros node (0 <= snode < num_nodes)|
-|`topic`|Topic name used between the two ros nodes|
+|`ptask`|publishing ros node (0 <= pnode < num_nodes)|
+|`stask`|subscribing ros node (0 <= snode < num_nodes)|
+|`topic`|topic name used between the two ros nodes|
 
 * **Example: task_graph_kcity_simu.yaml**
 > The following example is a task graph of nodes used in Autoware.
 
-![](doc/images/task_graph.PNG)
+![](doc/images/task_graph.png)
 
 ```yaml
 ###
@@ -110,23 +106,23 @@ chan1 : { ptask: 1, stask: 19, topic: /vmap_stat } # data: True
 ```
 
 ### **road_graph.yaml**
-* **poi#** is list of pio's, each describing a point of interest (POI) in a map. 
+* **poi#** describes a point of interest (POI) in a point map. 
 
 |Syntax|Description|
 -------|--------
-|`num_pois`|Number of POIs (Point Of Interest)|
-|`name`|POI's name|
+|`num_pois`|number of POIs|
+|`name`|name of POI|
 
-* **road#** is list of roads, each describing a road in a map.
+* **road#** describes a road section in a point map.
 
 |Syntax|Description|
 -------|--------
-|`ep1`|First end POI of road|
-|`ep2`|Second end POI of road|
-|`name`|Road's name|
-|`speed_limit`|Max velocity of the road|
-|`lookahead_ratio`|Lookahead ratio of the road for calculating steering value|
-|`p0`, `p1`, `p2`, `p3`|Four vertices on the road|
+|`ep1`|first poi of a road of interest|
+|`ep2`|second poi of a road of interest|
+|`name`|road's name|
+|`speed_limit`|max velocity of the road|
+|`lookahead_ratio`|lookahead ratio of the road suitable for pure pursuit algorithm|
+|`p0`, `p1`, `p2`, `p3`|four points defining the road in the point map|
 
 
 * **Example: road_graph_kcity_simu.yaml**
@@ -247,7 +243,7 @@ p2: [ 290.346801758, -212.831100464, 0.987794888308, 0.155760260119 ],
 p3: [ 257.643493652, -254.820495605, 0.971031686599, 0.238950755638 ]
 }
 ```
-![](doc/images/road_example.PNG)
+![](doc/images/road_example.png)
 
 ---
 
@@ -275,10 +271,10 @@ catkin_make
 
 ---
 
-## How to launch
-1. Create a task_graph.yaml, road_graph.yaml for the set of nodes to run.
-2. Create launch files to run each node.
-3. Execute Ichthus Launcher.
+## How to use
+1. Create a task_graph.yaml, road_graph.yaml for the set of ROS nodes you want to run.
+2. Create a launch file to run each ROS node.
+3. Execute the ichthus Launcher as follows.
 
 `roslaunch ichthus_launcher ichthus_launcher.launch`
 

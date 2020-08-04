@@ -1,0 +1,12 @@
+<launch>
+  <arg name="sim_mode" default="false" />
+
+  <group unless="$(arg sim_mode)">
+    <node pkg="topic_tools" type="relay" name="vel_relay" output="log" args="/estimate_twist /current_velocity"/>
+  </group>
+
+  <group if="$(arg sim_mode)">
+    <node pkg="topic_tools" type="relay" name="vel_relay" output="log" args="/sim_velocity /current_velocity"/>
+  </group>
+
+</launch>

@@ -1,0 +1,4 @@
+<launch>
+  <!-- edited by khkim on 20191107: /tf is updated every 200 ms -->
+  <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 /world /map 200"/> 
+</launch>

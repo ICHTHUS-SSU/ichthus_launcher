@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="map_file" type="points_map_loader" name="points_map_loader" args="noupdate $(find ichthus_launcher)/data/kcity/points_map/kcity_20190629_0.2_update.pcd" />
+</launch>
