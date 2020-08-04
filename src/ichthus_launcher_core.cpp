@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Hyoeun Lee, Chaewon Hong, Youngjoon Choi, Kanghee Kim. All rights reserved.
+ * Copyright 2019 Hyoeun Lee, Chaewon Hong, Youngjoon Choi, Kanghee Kim at Soongsil University. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
